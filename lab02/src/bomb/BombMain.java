@@ -5,19 +5,26 @@ import common.IntList;
 public class BombMain {
     public static void main(String[] args) {
         int phase = 2;
+        final int repeatTimes = 1337;
+        final int totalTimes = 100000;
+
         if (args.length > 0) {
             phase = Integer.parseInt(args[0]);
         }
-        // TODO: Find the correct inputs (passwords) to each phase using debugging techniques
+
         Bomb b = new Bomb();
+
         if (phase >= 0) {
-            b.phase0("Figure this out. I wonder where the phases are defined...");
+            b.phase0("39291226");
         }
+
         if (phase >= 1) {
-            b.phase1(null); // Figure this out too
+            IntList password = new IntList();
+            b.phase1(password.of(0, 9, 3, 0, 8));
         }
+
         if (phase >= 2) {
-            b.phase2("Figure this out. I wonder where the phases are defined...");
+            b.phase2("1 ".repeat(repeatTimes) + "-81201430" + " 1".repeat(totalTimes - repeatTimes));
         }
     }
 }

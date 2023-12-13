@@ -9,6 +9,10 @@ public class IntList {
         rest = r;
     }
 
+    public IntList(){
+        first = 0;
+        rest = null;
+    }
     /** Returns the ith item of this IntList. */
     public int get(int i) {
         if (i == 0) {

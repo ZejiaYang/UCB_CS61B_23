@@ -34,6 +34,7 @@ public class Bomb {
 
     public void phase0(String password) {
         String correctPassword = shufflePassword("hello");
+        // System.out.println("0: " + correctPassword);
         if (!password.equals(correctPassword)) {
             System.out.println("Phase 0 went BOOM!");
             System.exit(1);
@@ -43,6 +44,7 @@ public class Bomb {
 
     public void phase1(IntList password) {
         IntList correctIntListPassword = shufflePasswordIntList("bye");
+        // System.out.println(correctIntListPassword.print());
         if (!correctIntListPassword.equals(password)) {
             System.out.println("Phase 1 went BOOM!");
             System.exit(2);
