@@ -26,7 +26,8 @@ public class Model {
      *  and score 0. */
     public Model(int size) {
         board = new Board(size);
-        score = maxScore = 0;
+        score = 0;
+        maxScore = 0;
     }
 
     /** A new 2048 game where RAWVALUES contain the values of the tiles
@@ -92,8 +93,14 @@ public class Model {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
-
+        int size = b.size();
+        for (int col = 0; col < size; col++) {
+            for (int row = 0; row < size; row++) {
+                if (b.tile(col, row) == null) {
+                    return true;
+                }
+            }
+        }
 
         return false;
     }
@@ -104,8 +111,15 @@ public class Model {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
-
+        int size = b.size();
+        for (int col = 0; col < size; col++) {
+            for (int row = 0; row < size; row++) {
+                Tile t = b.tile(col, row);
+                if (t != null && t.value() == MAX_PIECE) {
+                    return true;
+                }
+            }
+        }
 
         return false;
     }
@@ -117,14 +131,32 @@ public class Model {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        int size = b.size();
+        int[][] neighbor = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Tile t = b.tile(i, j);
+                for (int k = 0; k < 4; k++) {
+                    int ni = i + neighbor[k][0];
+                    int nj = j + neighbor[k][1];
 
-
+                    if (ni >= 0 && ni < size && nj >= 0 && nj < size) {
+                        Tile nt = b.tile(ni, nj);
+                        if (t.value() == nt.value()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
         return false;
+
     }
 
     /** Tilt the board toward SIDE.
-     *
      * 1. If two Tile objects are adjacent in the direction of motion and have
      *    the same value, they are merged into one Tile of twice the original
      *    value and that new value is added to the score instance variable
@@ -136,11 +168,37 @@ public class Model {
      *    and the trailing tile does not.
      * */
     public void tilt(Side side) {
-        // TODO: Modify this.board (and if applicable, this.score) to account
         // for the tilt to the Side SIDE.
-
-
+        board.setViewingPerspective(side);
+        int size = board.size();
+        for (int col = 0; col < size; col += 1) {
+            int fill = size - 1;
+            Tile cur = null;
+            for (int row = size - 1; row >= 0; row -= 1) {
+                Tile tile = board.tile(col, row);
+                if (tile == null) {
+                    continue;
+                }
+                if (cur == null) {
+                    cur = tile;
+                } else if (cur.value() == tile.value()) {
+                    board.move(col, fill, cur);
+                    board.move(col, fill, tile);
+                    score += cur.value() * 2;
+                    fill -= 1;
+                    cur = null;
+                } else {
+                    board.move(col, fill, cur);
+                    fill -= 1;
+                    cur = tile;
+                }
+            }
+            if (cur != null) {
+                board.move(col, fill, cur);
+            }
+        }
         checkGameOver();
+        board.setViewingPerspective(Side.NORTH);
     }
 
 
