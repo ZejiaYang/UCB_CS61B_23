@@ -3,8 +3,8 @@ import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public class LinkedListDeque<T> implements Deque<T>{
-    private static class Node<T>{
+public class LinkedListDeque<T> implements Deque<T> {
+    private static class Node<T> {
         private T item;
         private Node<T> prev;
         private Node<T> next;
@@ -15,7 +15,7 @@ public class LinkedListDeque<T> implements Deque<T>{
             this.next = next;
         }
 
-        public Node(){
+        public Node() {
             this.item = null;
             this.prev = null;
             this.next = null;
@@ -25,7 +25,7 @@ public class LinkedListDeque<T> implements Deque<T>{
 
     private int size;
 
-    public LinkedListDeque(){
+    public LinkedListDeque() {
         sentinel = new Node<>();
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
@@ -88,7 +88,7 @@ public class LinkedListDeque<T> implements Deque<T>{
         }
         T item = sentinel.prev.item;
         Node<T> curLast = sentinel.prev.prev;
-        sentinel.prev= curLast;
+        sentinel.prev = curLast;
         curLast.next = sentinel;
         size -= 1;
         return item;
@@ -126,7 +126,7 @@ public class LinkedListDeque<T> implements Deque<T>{
 
         return getRecursiveHelper(node.next, index - 1);
     }
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Deque<String> lld1 = new LinkedListDeque<>();
 
         lld1.addFirst("back"); // after this call we expect: ["back"]
