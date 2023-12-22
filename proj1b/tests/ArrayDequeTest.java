@@ -105,7 +105,7 @@ public class ArrayDequeTest {
     public void testValidget() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
-         /* I've decided to add in comments the state after each call for the convenience of the
+        /* I've decided to add in comments the state after each call for the convenience of the
             person reading this test. Some programmers might consider this excessively verbose. */
         lld1.addLast(0);   // [0]
         lld1.addLast(1);   // [0, 1]
@@ -171,12 +171,12 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void testEmptySize(){
+    public void testEmptySize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
         assertThat(lld1.size() == 0).isTrue();
     }
     @Test
-    public void testAddSize(){
+    public void testAddSize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
         lld1.addFirst(1);
@@ -184,7 +184,7 @@ public class ArrayDequeTest {
         assertThat(lld1.size() == 2).isTrue();
     }
     @Test
-    public void testVarySize(){
+    public void testVarySize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
         lld1.addFirst(1);
@@ -193,7 +193,7 @@ public class ArrayDequeTest {
         assertThat(lld1.size() == 1).isTrue();
     }
     @Test
-    public void testVaryNonSize(){
+    public void testVaryNonSize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
         lld1.addFirst(1);
@@ -205,7 +205,7 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void RemoveFirstTestBasic() {
+    public void removeFirstTestBasic() {
         Deque<String> lld1 = new ArrayDeque<>();
 
         lld1.addFirst("back"); // after this call we expect: ["back"]
@@ -228,7 +228,7 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void RemoveLastTestBasic() {
+    public void removeLastTestBasic() {
         Deque<String> lld1 = new ArrayDeque<>();
 
         lld1.addFirst("back"); // after this call we expect: ["back"]
@@ -251,7 +251,7 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void RemoveFirstAndRemoveLastTest() {
+    public void removeFirstAndRemoveLastTest() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
          /* I've decided to add in comments the state after each call for the convenience of the
@@ -268,7 +268,7 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void RemoveFirstInvolveResize() {
+    public void removeFirstInvolveResize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
         for (int i = 0; i < 10; i += 1) {
@@ -279,11 +279,11 @@ public class ArrayDequeTest {
             lld1.removeFirst();
         }
 
-        assertThat(lld1.toList()).containsExactly(7,8,9).inOrder();
+        assertThat(lld1.toList()).containsExactly(7, 8, 9).inOrder();
     }
 
     @Test
-    public void RemoveLastInvolveResize() {
+    public void removeLastInvolveResize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
         for (int i = 0; i < 14; i += 1) {
@@ -297,7 +297,7 @@ public class ArrayDequeTest {
         assertThat(lld1.toList()).containsExactly(0, 1, 2).inOrder();
     }
     @Test
-    public void RemoveLastWithoutDownsize() {
+    public void removeLastWithoutDownsize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
         for (int i = 0; i < 14; i += 1) {
@@ -311,7 +311,7 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void RemoveFirstWithoutDownsize() {
+    public void removeFirstWithoutDownsize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
         for (int i = 0; i < 14; i += 1) {
@@ -325,7 +325,7 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void RemoveFull() {
+    public void removeFull() {
         Deque<Integer> lld1 = new ArrayDeque<>();
 
         for (int i = 0; i < 8; i += 1) {
