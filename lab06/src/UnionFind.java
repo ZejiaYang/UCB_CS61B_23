@@ -9,34 +9,42 @@ public class UnionFind {
     /* Creates a UnionFind data structure holding N items. Initially, all
        items are in disjoint sets. */
     public UnionFind(int N) {
-        // TODO: YOUR CODE HERE
+        data = new int[N];
+        for (int i = 0; i < N; i++) {
+            data[i] = -1;
+        }
     }
 
     /* Returns the size of the set V belongs to. */
     public int sizeOf(int v) {
-        // TODO: YOUR CODE HERE
-        return -1;
+        int root = find(v);
+        return -data[root];
     }
 
     /* Returns the parent of V. If V is the root of a tree, returns the
        negative size of the tree for which V is the root. */
     public int parent(int v) {
-        // TODO: YOUR CODE HERE
-        return -1;
+        return data[v];
     }
 
     /* Returns true if nodes/vertices V1 and V2 are connected. */
     public boolean connected(int v1, int v2) {
-        // TODO: YOUR CODE HERE
-        return false;
+        int r1 = find(v1);
+        int r2 = find(v2);
+        return r1 == r2;
     }
 
     /* Returns the root of the set V belongs to. Path-compression is employed
        allowing for fast search-time. If invalid items are passed into this
        function, throw an IllegalArgumentException. */
     public int find(int v) {
-        // TODO: YOUR CODE HERE
-        return -1;
+        if (v >= data.length) {
+            throw new IllegalArgumentException();
+        } else if (data[v] < 0) {
+            return v;
+        }
+        data[v] = find(data[v]);
+        return data[v];
     }
 
     /* Connects two items V1 and V2 together by connecting their respective
@@ -45,9 +53,19 @@ public class UnionFind {
        root to V2's root. Union-ing a item with itself or items that are
        already connected should not change the structure. */
     public void union(int v1, int v2) {
-        // TODO: YOUR CODE HERE
+        int r1 = find(v1);
+        int r2 = find(v2);
+        if (r1 == r2) {
+            return;
+        }
+        if (data[r1] > data[r2] || (data[r1] == data[r2] && r1 < r2)) {
+            data[r2] += data[r1];
+            data[r1] = r2;
+        } else {
+            data[r1] += data[r2];
+            data[r2] = r1;
+        }
     }
-
     /**
      * DO NOT DELETE OR MODIFY THIS, OTHERWISE THE TESTS WILL NOT PASS.
      */

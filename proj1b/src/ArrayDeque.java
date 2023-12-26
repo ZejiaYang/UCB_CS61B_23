@@ -15,7 +15,6 @@ public class ArrayDeque<T> implements Deque<T> {
         nextFirst = 3;
         nextLast = 4;
         length = 0;
-        factor = 2;
     }
 
     private T[] resize(int size) {
@@ -33,7 +32,7 @@ public class ArrayDeque<T> implements Deque<T> {
     @Override
     public void addFirst(T x) {
         if (length == size) {
-            item = resize(size * factor);
+            item = resize(size * 2);
         }
         length += 1;
         item[nextFirst] = x;
@@ -43,7 +42,7 @@ public class ArrayDeque<T> implements Deque<T> {
     @Override
     public void addLast(T x) {
         if (length == size) {
-            item = resize(size * factor);
+            item = resize(size * 2);
         }
         length += 1;
         item[nextLast] = x;
@@ -124,6 +123,6 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T getRecursive(int index) {
-        return null;
+        throw new UnsupportedOperationException("No need to implement getRecursive for proj 1b");
     }
 }

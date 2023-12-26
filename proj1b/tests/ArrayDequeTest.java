@@ -1,5 +1,6 @@
 import jh61b.utils.Reflection;
 import org.apache.commons.collections.list.AbstractLinkedList;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +48,8 @@ public class ArrayDequeTest {
      *  In other words, the tedious work of adding the extra assertThat statements isn't worth it. */
     public void addLastTestBasic() {
         Deque<String> lld1 = new ArrayDeque<>();
-
+        String a = new String("aaaa");
+        char c = a.charAt(0);
         lld1.addLast("front"); // after this call we expect: ["front"]
         lld1.addLast("middle"); // after this call we expect: ["front", "middle"]
         lld1.addLast("back"); // after this call we expect: ["front", "middle", "back"]
@@ -270,40 +272,32 @@ public class ArrayDequeTest {
     @Test
     public void removeFirstInvolveResize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
-
         for (int i = 0; i < 10; i += 1) {
             lld1.addLast(i);
         }
-
         for (int j = 0; j < 7; j += 1) {
             lld1.removeFirst();
         }
-
         assertThat(lld1.toList()).containsExactly(7, 8, 9).inOrder();
     }
 
     @Test
     public void removeLastInvolveResize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
-
         for (int i = 0; i < 14; i += 1) {
             lld1.addLast(i);
         }
-
         for (int j = 0; j < 11; j += 1) {
             lld1.removeLast();
         }
-
         assertThat(lld1.toList()).containsExactly(0, 1, 2).inOrder();
     }
     @Test
     public void removeLastWithoutDownsize() {
         Deque<Integer> lld1 = new ArrayDeque<>();
-
         for (int i = 0; i < 14; i += 1) {
             lld1.addLast(i);
         }
-
         for (int j = 0; j < 7; j += 1) {
             lld1.removeLast();
         }
@@ -327,7 +321,6 @@ public class ArrayDequeTest {
     @Test
     public void removeFull() {
         Deque<Integer> lld1 = new ArrayDeque<>();
-
         for (int i = 0; i < 8; i += 1) {
             lld1.addLast(i);
         }
@@ -336,4 +329,13 @@ public class ArrayDequeTest {
         assertThat(lld1.toList()).containsExactly(1, 2, 3, 4, 5, 6).inOrder();
     }
 
+    @Test
+    public void removeNull() {
+        Deque<Integer> lld = new ArrayDeque<>();
+        assertThat(lld.removeLast()).isNull();
+
+        lld.addLast(1);
+        lld.removeFirst();
+        assertThat(lld.removeFirst()).isNull();
+    }
 }

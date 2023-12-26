@@ -1,7 +1,4 @@
-package timing;
-
 import edu.princeton.cs.algs4.Stopwatch;
-import org.checkerframework.checker.units.qual.A;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
@@ -24,31 +21,21 @@ public class Experiments {
         }
     }
 
-    /** Computes the nth Fibonacci number using a slow naive recursive strategy.*/
-    private static int fib(int n) {
-        if (n < 0) {
-            return 0;
-        }
-        if (n == 1) {
-            return 1;
-        }
-        return fib(n - 1) + fib(n - 2);
-    }
-
-    public static TimingData exampleFibonacciExperiment() {
+    public static TimingData timeFindPC() {
         List<Integer> Ns = new ArrayList<>();
         List<Double> times = new ArrayList<>();
         List<Integer> opCounts = new ArrayList<>();
 
-        // We're computing each fibonacci number 100 times to get a more stable number
-        int ops = 100;
-
-        for (int N = 10; N < 31; N++) {
+        for (int N = 1000; N <= 12800000; N *= 2) {
             Ns.add(N);
-            opCounts.add(ops);
+            opCounts.add(N);
+            UnionFind uf = new UnionFind(N);
+            for (int j = 1; j < N; j += 1) {
+                uf.union(j - 1, j);
+            }
             Stopwatch sw = new Stopwatch();
-            for (int j = 0; j < ops; j++) {
-                int fib = fib(N);
+            for (int i = N - 1; i >= 0; i -= 1) {
+                int t = uf.find(i);
             }
             times.add(sw.elapsedTime());
         }
@@ -56,56 +43,59 @@ public class Experiments {
         return new TimingData(Ns, times, opCounts);
     }
 
-    public static TimingData timeAListConstruction() {
+    public static TimingData timeFindSingle() {
         List<Integer> Ns = new ArrayList<>();
         List<Double> times = new ArrayList<>();
         List<Integer> opCounts = new ArrayList<>();
+        UnionFind uf = new UnionFind(128000);
 
-        for (int N = 1000; N <= 10240000; N *= 2) {
+        for (int j = 1; j < 128000; j += 1) {
+            uf.union(j - 1, j);
+        }
+
+        for (int N = 128000 - 1; N >= 0; N -= 100) {
             Ns.add(N);
-            int ops = N - 100;
-            opCounts.add(ops);
+            opCounts.add(1);
             Stopwatch sw = new Stopwatch();
-            AList<Integer> list = new AList<>();
-            for (int i = 100; i < N; i++) {
-                list.addLast(1);
-            }
+            int t = uf.find(N);
             times.add(sw.elapsedTime());
         }
 
         return new TimingData(Ns, times, opCounts);
     }
 
-
-    public static TimingData timeSLListGetLast() {
+    public static TimingData timeUnionSingle() {
         List<Integer> Ns = new ArrayList<>();
         List<Double> times = new ArrayList<>();
         List<Integer> opCounts = new ArrayList<>();
-
-        for (int N = 1000; N <= 128000; N *= 2) {
-            Ns.add(N);
-            int ops = 1000;
-            opCounts.add(ops);
-            LinkedList<Integer> list = new LinkedList<>();
-            for (int j = 0; j < N; j += 1) {
-                list.addLast(1);
-            }
-            Stopwatch sw = new Stopwatch();
-            for (int i = 0; i < ops; i += 1) {
-                int t = list.get((int) (N / 2));
-            }
-            times.add(sw.elapsedTime());
+        UnionFind uf = new UnionFind(64000);
+        for (int N = 1; N < 32000; N += 2) {
+            uf.union(N + 1, N);
+        }
+        for (int N = 32000 + 1; N < 64000 - 1; N += 2) {
+            uf.union(N + 1, N);
         }
 
+        for (int N = 2; N < 64000; N += 2) {
+            uf.union(N - 2, N);
+        }
+
+        for (int N = 1; N < 64000; N += 2) {
+            Ns.add(N);
+            opCounts.add(1);
+            Stopwatch sw = new Stopwatch();
+            uf.find(N);
+            times.add(sw.elapsedTime());
+        }
+        System.out.println(uf.parent(64000 - 999));
+        System.out.println(uf.parent(63002));
         return new TimingData(Ns, times, opCounts);
-
     }
-
     public static void main(String[] args) {
         // TODO: Modify the following line to change the experiment you're running
-        TimingData td = timeSLListGetLast();
+        TimingData td = timeUnionSingle();
         // Modify this line to make the chart title make sense
-        String title = "SLList getLast()";
+        String title = "Union Single find()";
 
         // Convert "times" (in seconds) and "opCounts" to nanoseconds / op
         List<Double> timesUsPerOp = new ArrayList<>();
@@ -113,7 +103,7 @@ public class Experiments {
             timesUsPerOp.add(td.getTimes().get(i) / td.getOpCounts().get(i) * 1e6);
         }
 
-        printTimingTable(td);
+        // printTimingTable(td);
 
         XYChart chart = QuickChart.getChart(title, "N", "time (us per op)", "Time", td.getNs(), timesUsPerOp);
         new SwingWrapper(chart).displayChart();

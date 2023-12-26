@@ -83,7 +83,32 @@ public class UnionFindTest {
     /**
      * Write your own tests below here to verify for correctness. The given tests are not comprehensive.
      */
+    @Test
+    public void test5() {
+        UnionFind uf = new UnionFind(8);
+        uf.union(0, 2);
+        uf.union(2, 4);
+        uf.union(1, 5);
+        uf.union(5, 4);
+        assertThat(uf.connected(4, 0)).isTrue();
+        assertThat(uf.find(1)).isEqualTo(2);
 
+        uf.union(3, 7);
+        uf.union(7, 6);
+        uf.union(7, 2);
+        assertThat(uf.connected(6, 0)).isTrue();
+        assertThat(uf.find(6)).isEqualTo(2);
+        assertThat(uf.sizeOf(4)).isEqualTo(8);
+        assertThat(uf.returnData()[7]).isEqualTo(2);
+        assertThat(uf.returnData()[3]).isEqualTo(7);
+
+        assertThat(uf.find(3)).isEqualTo(2);
+        assertThat(uf.returnData()[3]).isEqualTo(2);
+    }
+
+    /**
+     * Test Runtime maybe can try!
+     */
 }
 
 
